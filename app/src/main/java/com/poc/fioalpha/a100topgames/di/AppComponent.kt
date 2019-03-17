@@ -3,6 +3,7 @@ package com.poc.fioalpha.a100topgames.di
 import android.app.Application
 import com.poc.fioalpha.a100topgames.MainActivity
 import com.poc.fioalpha.a100topgames.MainApplication
+import com.poc.fioalpha.a100topgames.data.di.DataModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjection
@@ -16,6 +17,7 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         AppModule::class,
         NetworkModule::class,
+        DataModule::class,
         ActivityBuilder::class
     ]
 )
