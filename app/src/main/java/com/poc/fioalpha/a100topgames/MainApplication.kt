@@ -2,6 +2,7 @@ package com.poc.fioalpha.a100topgames
 
 import android.app.Activity
 import android.app.Application
+import com.poc.fioalpha.a100topgames.data.localdatasource.AppDataBase
 import com.poc.fioalpha.a100topgames.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -16,6 +17,8 @@ class MainApplication: Application(), HasActivityInjector{
     override fun onCreate() {
         super.onCreate()
         buildTopLevelDependenciesGraph()
+
+
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {
