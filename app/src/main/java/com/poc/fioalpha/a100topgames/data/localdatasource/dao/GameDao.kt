@@ -13,12 +13,12 @@ import io.reactivex.Single
 interface GameDao {
 
     @Query("SELECT * FROM game LIMIT :limit OFFSET :offset")
-    fun getGame(offset:Int = 10, limit: Int = 10): Single<GameRoom>
+    fun getGame(offset:Int = 10, limit: Int = 10): Single<List<GameRoom>>
 
     @Insert
-    fun saveGame(games: List<GameRoom>): Completable
+    fun saveGame(games: List<GameRoom>)
 
     @Delete
-    fun deleGame(game: GameRoom): Completable
+    fun deleteGame(game: GameRoom)
 
 }

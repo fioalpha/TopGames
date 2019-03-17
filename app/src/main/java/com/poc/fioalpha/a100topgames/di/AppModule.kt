@@ -1,15 +1,16 @@
 package com.poc.fioalpha.a100topgames.di
 
 import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule{
+class AppModule(){
 
     @Provides
     @Singleton
-    fun applicationProvides(application: Application): Application = application
+    fun applicationProvides(application: Application): Context = application
 
 }
