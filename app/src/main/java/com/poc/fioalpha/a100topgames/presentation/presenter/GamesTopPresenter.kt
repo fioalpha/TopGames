@@ -26,9 +26,9 @@ class GamesTopPresenterImpl @Inject constructor(
         gamesMainView.showLoading()
         disposable.add(
             repository.getTopGames(page)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .map { transformToGamesDomainToViewModel(it) }
-                .observeOn(Schedulers.io())
-                .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
                         gamesMainView.setData(it)
