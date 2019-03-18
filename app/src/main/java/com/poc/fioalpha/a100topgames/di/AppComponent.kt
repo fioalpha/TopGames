@@ -1,13 +1,9 @@
 package com.poc.fioalpha.a100topgames.di
 
 import android.app.Application
-import com.poc.fioalpha.a100topgames.MainActivity
 import com.poc.fioalpha.a100topgames.MainApplication
-import com.poc.fioalpha.a100topgames.data.di.DataModule
-import com.poc.fioalpha.a100topgames.data.di.RoomModule
 import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjection
 import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
 
