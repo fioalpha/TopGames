@@ -1,5 +1,10 @@
 package com.poc.fioalpha.a100topgames.data.localdatasource
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.telecom.ConnectionService
+import android.util.Log
+import androidx.core.content.getSystemService
 import com.poc.fioalpha.a100topgames.data.localdatasource.model.transformToGame
 import com.poc.fioalpha.a100topgames.data.localdatasource.model.transformToGames
 import com.poc.fioalpha.a100topgames.domain.model.GamesDomain
@@ -17,12 +22,27 @@ interface LocalDataSource {
 
     fun getGames(limit: Int = 10, offset: Int): Single<List<GamesDomain>>
 
+    fun isConnectedInternet(): Single<Boolean>
 
 }
 
 class LocalDataSourceImpl @Inject constructor(
-    private val room: AppDataBase
+    private val room: AppDataBase,
+    private val context: Context
 ): LocalDataSource{
+    override fun isConnectedInternet(): Single<Boolean> {
+        return Single.defer {
+            try {
+                val connectivity = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                Single.just(connectivity.activeNetworkInfo.isConnected)
+
+            }catch (e: Exception) {
+                Log.d("LOCAL", e.toString())
+                Single.just(false)
+            }
+        }
+
+    }
 
     override fun saveGame(games: List<GamesDomain>, page: Int): Completable {
         return Completable.defer {

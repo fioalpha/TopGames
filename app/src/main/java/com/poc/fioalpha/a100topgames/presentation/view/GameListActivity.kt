@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.Toast
 import android.widget.Toast.makeText
 import androidx.databinding.BindingAdapter
@@ -17,6 +18,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SnapHelper
+import com.google.android.material.snackbar.Snackbar
 import com.poc.fioalpha.a100topgames.BR
 import com.poc.fioalpha.a100topgames.R
 import com.poc.fioalpha.a100topgames.presentation.model.GameViewModel
@@ -46,6 +49,10 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
         presenter.selectedGame(it)
     }
 
+    private val snackbar: Snackbar by lazy {
+        Snackbar.make(games_top_recycler, "Sem conexao a internet", Snackbar.LENGTH_INDEFINITE)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
@@ -64,7 +71,6 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
     }
 
     override fun showLoading() {
-        Toast.makeText(this,  "Carregando dados", Toast.LENGTH_SHORT).show()
     }
 
     override fun hideLoading() {
@@ -84,6 +90,14 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
                 putExtra(GAME_TOP_DATA_EXTRA, view)
                 startActivity(this)
             }
+    }
+
+    override fun showNotConnected() {
+        if (snackbar.isShown.not()) snackbar.show()
+    }
+
+    override fun hideNotConnected() {
+        snackbar.dismiss()
     }
 
 }

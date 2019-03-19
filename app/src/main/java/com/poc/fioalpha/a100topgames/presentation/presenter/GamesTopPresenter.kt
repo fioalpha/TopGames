@@ -1,6 +1,8 @@
 package com.poc.fioalpha.a100topgames.presentation.presenter
 
 import com.poc.fioalpha.a100topgames.data.Repository
+import com.poc.fioalpha.a100topgames.domain.usecase.GetGamesTopUseCase
+import com.poc.fioalpha.a100topgames.domain.usecase.IsConnectedNetworkUseCase
 import com.poc.fioalpha.a100topgames.presentation.model.GameViewModel
 import com.poc.fioalpha.a100topgames.presentation.model.transformToGamesDomainToViewModel
 import com.poc.fioalpha.a100topgames.presentation.view.GamesMainView
@@ -19,21 +21,25 @@ interface GamesTopPresenter {
 
 class GamesTopPresenterImpl @Inject constructor(
     private val gamesMainView: GamesMainView,
-    private val repository: Repository
+    private val isConnectedNetworkUseCase: IsConnectedNetworkUseCase,
+    private val getGamesTopUseCase: GetGamesTopUseCase
 ) : GamesTopPresenter {
 
     private val disposable: CompositeDisposable = CompositeDisposable()
 
     override fun getGamesTops(page: Int) {
-        var page1 =1
-        if(page >= 10) page1 = page
-
         gamesMainView.showLoading()
         disposable.add(
-            repository.getTopGames(page1)
-                .observeOn(AndroidSchedulers.mainThread())
+
+            isConnectedNetworkUseCase.execute()
+                .doOnSuccess {
+                    if(it.not()) gamesMainView.showNotConnected()
+                    else gamesMainView.hideNotConnected()
+                }
+                .flatMap { getGamesTopUseCase.setConnected(it).setPage(page).execute() }
                 .subscribeOn(Schedulers.io())
                 .map { transformToGamesDomainToViewModel(it) }
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     {
                         gamesMainView.setData(it)

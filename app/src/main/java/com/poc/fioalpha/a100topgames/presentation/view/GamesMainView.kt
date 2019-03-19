@@ -10,5 +10,6 @@ interface GamesMainView {
     fun setData(data: List<GameViewModel>)
     fun showError()
     fun goDetailGame(view: GameViewModel)
-
+    fun showNotConnected()
+    fun hideNotConnected()
 }

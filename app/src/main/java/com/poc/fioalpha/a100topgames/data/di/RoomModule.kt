@@ -1,5 +1,6 @@
 package com.poc.fioalpha.a100topgames.data.di
 
+import android.content.Context
 import com.poc.fioalpha.a100topgames.data.localdatasource.AppDataBase
 import com.poc.fioalpha.a100topgames.data.localdatasource.LocalDataSource
 import com.poc.fioalpha.a100topgames.data.localdatasource.LocalDataSourceImpl
@@ -11,6 +12,8 @@ import dagger.Provides
 class RoomModule {
 
     @Provides
-    fun roomProvides(room: AppDataBase): LocalDataSource = LocalDataSourceImpl(room)
+    fun roomProvides(
+        room: AppDataBase,
+        context: Context): LocalDataSource = LocalDataSourceImpl(room, context)
 
 }

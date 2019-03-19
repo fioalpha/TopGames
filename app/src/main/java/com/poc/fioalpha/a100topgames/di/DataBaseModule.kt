@@ -18,6 +18,6 @@ class DataBaseModule {
         context,
         AppDataBase::class.java,
         "database.sql"
-    ).build()
+    ).allowMainThreadQueries().build()
 
 }
