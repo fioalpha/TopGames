@@ -18,7 +18,7 @@ class  RemoteDataSourceImpl @Inject constructor(
 ): RemoteDataSource{
 
     override fun getTopGames(page: Int): Single<List<GamesDomain>> {
-        return retrofit.create(RestService::class.java).getTopGames()
+        return retrofit.create(RestService::class.java).getTopGames(page)
             .map { it.transformToDomain() }
     }
 

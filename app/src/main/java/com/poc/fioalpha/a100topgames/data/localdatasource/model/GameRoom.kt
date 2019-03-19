@@ -6,7 +6,8 @@ import com.poc.fioalpha.a100topgames.domain.model.GamesDomain
 
 @Entity(tableName = "game")
 data class GameRoom (
-    @PrimaryKey(autoGenerate = true) val _id: Int? = 0,
+    @PrimaryKey(autoGenerate = true) var _id: Int = 0
+    ,
     val name: String,
     val counter: Int,
     val viewers: Int,

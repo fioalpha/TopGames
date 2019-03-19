@@ -21,7 +21,7 @@ class RepositoryImpl @Inject constructor(
     override fun getTopGames(page: Int): Single<List<GamesDomain>> {
         return remoteDataSource.getTopGames(page)
             .doOnSuccess {
-                localDataSource.saveGame(it)
+                localDataSource.saveGame(it).blockingGet()
             }
             .onErrorResumeNext {
                 localDataSource.getGames(offset = page)

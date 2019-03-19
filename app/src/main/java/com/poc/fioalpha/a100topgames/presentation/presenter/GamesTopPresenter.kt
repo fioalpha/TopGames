@@ -25,9 +25,12 @@ class GamesTopPresenterImpl @Inject constructor(
     private val disposable: CompositeDisposable = CompositeDisposable()
 
     override fun getGamesTops(page: Int) {
+        var page1 =1
+        if(page >= 10) page1 = page
+
         gamesMainView.showLoading()
         disposable.add(
-            repository.getTopGames(page)
+            repository.getTopGames(page1)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .map { transformToGamesDomainToViewModel(it) }

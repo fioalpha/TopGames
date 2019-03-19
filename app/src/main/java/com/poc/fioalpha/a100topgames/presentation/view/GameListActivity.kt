@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
@@ -31,6 +33,15 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
 
     @Inject lateinit var presenter: GamesTopPresenter
 
+    private val gridLayoutManager = GridLayoutManager(this@GameListActivity, 2)
+
+    private var scrollEndLess = EndLessScroll(
+        gridLayoutManager,
+        EndLessStrategies.create()
+    ){
+        presenter.getGamesTops(it)
+    }
+
     private val adapterGamesTop: GamesTopListAdapter = GamesTopListAdapter{
         presenter.selectedGame(it)
     }
@@ -39,24 +50,24 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         games_top_recycler.apply {
             this.adapter = adapterGamesTop
-            layoutManager = GridLayoutManager(this@GameListActivity, 2)
-//            layoutManager = LinearLayoutManager(this@GameListActivity)
+            layoutManager = gridLayoutManager
+            addOnScrollListener(scrollEndLess)
         }
     }
 
     override fun onStart() {
         super.onStart()
-        presenter.getGamesTops(0)
+        presenter.getGamesTops(1)
     }
 
     override fun showLoading() {
-
+        Toast.makeText(this,  "Carregando dados", Toast.LENGTH_SHORT).show()
     }
 
     override fun hideLoading() {
-
     }
 
     override fun setData(data: List<GameViewModel>) {
@@ -73,6 +84,40 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
                 putExtra(GAME_TOP_DATA_EXTRA, view)
                 startActivity(this)
             }
+    }
+
+}
+
+class EndLessScroll(
+    private val layoutManager: GridLayoutManager,
+    private val endLessStrategies: EndLessStrategies,
+    private val updateAction: (Int) -> Any
+): RecyclerView.OnScrollListener(){
+    var totalItemCount = 0
+    var lastItemCount = 0
+    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+
+        totalItemCount = layoutManager.itemCount
+        lastItemCount = layoutManager.findLastCompletelyVisibleItemPosition() + 1
+
+        if (endLessStrategies.isUpdateData(totalItemCount, lastItemCount)) {
+            updateAction(totalItemCount)
+        }
+    }
+}
+
+class EndLessStrategies {
+
+    fun isUpdateData(
+        totalItemCount: Int,
+        lastItemVisible: Int
+    ): Boolean {
+        return (lastItemVisible) == totalItemCount
+    }
+
+    companion object {
+        fun create() = EndLessStrategies()
     }
 
 }
