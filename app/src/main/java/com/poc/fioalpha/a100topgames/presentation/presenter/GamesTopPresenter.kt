@@ -1,6 +1,7 @@
 package com.poc.fioalpha.a100topgames.presentation.presenter
 
 import com.poc.fioalpha.a100topgames.data.Repository
+import com.poc.fioalpha.a100topgames.presentation.model.GameViewModel
 import com.poc.fioalpha.a100topgames.presentation.model.transformToGamesDomainToViewModel
 import com.poc.fioalpha.a100topgames.presentation.view.GamesMainView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,6 +14,7 @@ interface GamesTopPresenter {
 
     fun getGamesTops(page: Int)
 
+    fun selectedGame(view: GameViewModel)
 }
 
 class GamesTopPresenterImpl @Inject constructor(
@@ -40,6 +42,10 @@ class GamesTopPresenterImpl @Inject constructor(
                     }
                 )
         )
-
     }
+
+    override fun selectedGame(view: GameViewModel) {
+       gamesMainView.goDetailGame(view)
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.poc.fioalpha.a100topgames.presentation.view
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,15 +16,19 @@ import com.poc.fioalpha.a100topgames.BR
 import com.poc.fioalpha.a100topgames.R
 import com.poc.fioalpha.a100topgames.presentation.model.GameViewModel
 import com.poc.fioalpha.a100topgames.presentation.presenter.GamesTopPresenter
+import com.poc.fioalpha.a100topgames.presentation.view.DetailGameTopActivity.Companion.GAME_TOP_DATA_EXTRA
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class GameListActivity : AppCompatActivity(), GamesMainView {
 
+
     @Inject lateinit var presenter: GamesTopPresenter
 
-    private val adapterGamesTop: GamesTopListAdapter = GamesTopListAdapter()
+    private val adapterGamesTop: GamesTopListAdapter = GamesTopListAdapter{
+        presenter.selectedGame(it)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -55,9 +60,21 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
     override fun showError() {
         Toast.makeText(this,  "Houve erro", Toast.LENGTH_SHORT).show()
     }
+
+    override fun goDetailGame(view: GameViewModel) {
+        Intent(this, DetailGameTopActivity::class.java)
+            .apply {
+                putExtra(GAME_TOP_DATA_EXTRA, view)
+                startActivity(this)
+            }
+
+    }
+
 }
 
-class GamesTopListAdapter: RecyclerView.Adapter<GamesTopListAdapter.GamesTopViewHolder>() {
+class GamesTopListAdapter(
+    private val clickItem: (GameViewModel) -> Any
+): RecyclerView.Adapter<GamesTopListAdapter.GamesTopViewHolder>() {
 
     private val item: MutableList<GameViewModel> = arrayListOf()
 
@@ -70,7 +87,7 @@ class GamesTopListAdapter: RecyclerView.Adapter<GamesTopListAdapter.GamesTopView
         val  viewBind = DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context), R.layout.adapter_game_top, parent, false
         )
-        return GamesTopViewHolder(viewBind)
+        return GamesTopViewHolder(viewBind, clickItem)
     }
 
     override fun getItemCount(): Int = item.count()
@@ -80,18 +97,14 @@ class GamesTopListAdapter: RecyclerView.Adapter<GamesTopListAdapter.GamesTopView
     }
 
     class GamesTopViewHolder(
-        private val itemDataBind: ViewDataBinding
+        private val itemDataBind: ViewDataBinding,
+        private val clickItem: (GameViewModel) -> Any
     ): RecyclerView.ViewHolder(itemDataBind.root) {
 
         fun bind(item: GameViewModel) {
             itemDataBind.setVariable(BR.gamesTop, item)
             itemDataBind.executePendingBindings()
+            itemDataBind.root.setOnClickListener { clickItem(item) }
         }
-
     }
-
-}
-
-fun Toast.show(context: Context, message: String) {
-    makeText(context, message, Toast.LENGTH_SHORT).show()
 }

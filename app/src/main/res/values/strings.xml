@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">100TopGames</string>
+    <string name="detail_viewer_label">Views:%1$s</string>
+    <string name="details_channel_label">Canal:%1$s</string>
 </resources>

@@ -9,5 +9,6 @@ interface GamesMainView {
     fun hideLoading()
     fun setData(data: List<GameViewModel>)
     fun showError()
+    fun goDetailGame(view: GameViewModel)
 
 }
