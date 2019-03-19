@@ -1,6 +1,5 @@
 package com.poc.fioalpha.a100topgames.data.localdatasource
 
-import com.poc.fioalpha.a100topgames.data.localdatasource.model.GameRoom
 import com.poc.fioalpha.a100topgames.data.localdatasource.model.transformFromGames
 import com.poc.fioalpha.a100topgames.data.localdatasource.model.transformToGame
 import com.poc.fioalpha.a100topgames.data.localdatasource.model.transformToGames
@@ -13,11 +12,12 @@ import javax.inject.Inject
 
 interface LocalDataSource {
 
-    fun saveGame(games: List<GamesDomain>): Completable
+    fun saveGame(games: List<GamesDomain>, page: Int): Completable
 
     fun deleteGame(games: List<GamesDomain>): Completable
 
     fun getGames(limit: Int = 10, offset: Int): Single<List<GamesDomain>>
+
 
 }
 
@@ -25,10 +25,14 @@ class LocalDataSourceImpl @Inject constructor(
     private val room: AppDataBase
 ): LocalDataSource{
 
-    override fun saveGame(games: List<GamesDomain>): Completable {
+    override fun saveGame(games: List<GamesDomain>, page: Int): Completable {
         return Completable.defer {
             try {
-                room.gameDao().saveGame(transformFromGames(games))
+                val pageAdjustment = if(page > 1) page else 0
+                games.forEachIndexed { index, gamesDomain ->
+                    val id = index + pageAdjustment
+                    room.gameDao().saveGame(gamesDomain.transformToGame(id))
+                }
                 Completable.complete()
             } catch (e: Exception) {
                 Completable.error(e)
@@ -50,6 +54,7 @@ class LocalDataSourceImpl @Inject constructor(
     }
 
     override fun getGames(limit: Int, offset: Int): Single<List<GamesDomain>> {
-        return room.gameDao().getGame(limit, offset).map { transformToGames(it) }
+        val offsetAdjust = if(offset > 1) offset else 0
+        return room.gameDao().getGameWithLimit(offsetAdjust, limit).map { transformToGames(it) }
     }
 }

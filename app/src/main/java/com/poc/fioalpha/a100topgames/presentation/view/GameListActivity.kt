@@ -60,7 +60,7 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
 
     override fun onStart() {
         super.onStart()
-        presenter.getGamesTops(1)
+        presenter.getGamesTops(0)
     }
 
     override fun showLoading() {

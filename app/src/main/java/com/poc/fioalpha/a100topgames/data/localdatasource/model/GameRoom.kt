@@ -6,8 +6,7 @@ import com.poc.fioalpha.a100topgames.domain.model.GamesDomain
 
 @Entity(tableName = "game")
 data class GameRoom (
-    @PrimaryKey(autoGenerate = true) var _id: Int = 0
-    ,
+    @PrimaryKey var _id: Int = 0,
     val name: String,
     val counter: Int,
     val viewers: Int,
@@ -28,7 +27,15 @@ fun transformToGames(games: List<GameRoom>): List<GamesDomain> {
     return games.map { it.transformToGame() }
 }
 
-
+fun GamesDomain.transformToGame(index: Int): GameRoom {
+    return GameRoom(
+        _id = index,
+        name = name,
+        counter = countChannel,
+        viewers = countViews,
+        image = image["large"]?: ""
+    )
+}
 
 fun GamesDomain.transformToGame(): GameRoom {
     return GameRoom(
@@ -37,9 +44,5 @@ fun GamesDomain.transformToGame(): GameRoom {
         viewers = countViews,
         image = image["large"]?: ""
     )
-}
-
-fun transformFromGames(games: List<GamesDomain>): List<GameRoom> {
-    return games.map { it.transformToGame() }
 }
 
