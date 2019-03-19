@@ -71,9 +71,11 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
     }
 
     override fun showLoading() {
+        game_top_loading.show()
     }
 
     override fun hideLoading() {
+        game_top_loading.hide()
     }
 
     override fun setData(data: List<GameViewModel>) {
@@ -178,4 +180,13 @@ fun ImageView.loadImage(@NotNull url: String) {
     if(url.isEmpty()) return
     Picasso.with(context).load(url)
         .into(this)
+}
+
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    visibility = View.GONE
 }
