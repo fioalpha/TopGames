@@ -7,13 +7,15 @@ import java.io.Serializable
 data class GameViewModel (
     val name: String,
     val counterChannel: String,
-    val counterViewer: String
+    val counterViewer: String,
+    val image: String
 ): Serializable
 
 fun GamesDomain.transformToViewModel(): GameViewModel = GameViewModel(
     name = name,
     counterChannel = countChannel.toString(),
-    counterViewer = countViews.toString()
+    counterViewer = countViews.toString(),
+    image = image["large"]?: ""
 )
 
 fun transformToGamesDomainToViewModel(data: List<GamesDomain>): List<GameViewModel> {

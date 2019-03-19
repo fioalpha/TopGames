@@ -9,7 +9,8 @@ data class GameRoom (
     @PrimaryKey(autoGenerate = true) val _id: Int? = 0,
     val name: String,
     val counter: Int,
-    val viewers: Int
+    val viewers: Int,
+    val image: String
 )
 
 
@@ -32,7 +33,8 @@ fun GamesDomain.transformToGame(): GameRoom {
     return GameRoom(
         name = name,
         counter = countChannel,
-        viewers = countViews
+        viewers = countViews,
+        image = image["large"]?: ""
     )
 }
 

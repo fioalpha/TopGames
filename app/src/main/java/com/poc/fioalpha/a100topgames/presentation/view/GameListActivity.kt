@@ -6,10 +6,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import android.widget.Toast.makeText
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.poc.fioalpha.a100topgames.BR
@@ -17,8 +20,10 @@ import com.poc.fioalpha.a100topgames.R
 import com.poc.fioalpha.a100topgames.presentation.model.GameViewModel
 import com.poc.fioalpha.a100topgames.presentation.presenter.GamesTopPresenter
 import com.poc.fioalpha.a100topgames.presentation.view.DetailGameTopActivity.Companion.GAME_TOP_DATA_EXTRA
+import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.annotations.NotNull
 import javax.inject.Inject
 
 class GameListActivity : AppCompatActivity(), GamesMainView {
@@ -36,7 +41,8 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
         setContentView(R.layout.activity_main)
         games_top_recycler.apply {
             this.adapter = adapterGamesTop
-            layoutManager = LinearLayoutManager(this@GameListActivity)
+            layoutManager = GridLayoutManager(this@GameListActivity, 2)
+//            layoutManager = LinearLayoutManager(this@GameListActivity)
         }
     }
 
@@ -67,7 +73,6 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
                 putExtra(GAME_TOP_DATA_EXTRA, view)
                 startActivity(this)
             }
-
     }
 
 }
@@ -107,4 +112,11 @@ class GamesTopListAdapter(
             itemDataBind.root.setOnClickListener { clickItem(item) }
         }
     }
+}
+
+@BindingAdapter("bind:imageUrl")
+fun ImageView.loadImage(@NotNull url: String) {
+    if(url.isEmpty()) return
+    Picasso.with(context).load(url)
+        .into(this)
 }
