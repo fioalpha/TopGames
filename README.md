@@ -3,9 +3,9 @@
 ## Projeto 100 Top Game
 Projeto para teste dos meus conhecimento.
 
-![Screenshot_1553050352.png](:storage/41a12f74-8cc5-4c52-9d48-fb26c5d8a729/cf4703ee.png)
+![Screenshot_1553050352.png](screenshoot/image_list.png)
 
-![Screenshot_1553050435.png](:storage/41a12f74-8cc5-4c52-9d48-fb26c5d8a729/8718c1be.png)
+![Screenshot_1553050435.png](screenshoot/image_detail.png)
 
 ### Arquitetura
 Usando MVP para padrao da views, clear architecture como base de arquitetura do projeto.
