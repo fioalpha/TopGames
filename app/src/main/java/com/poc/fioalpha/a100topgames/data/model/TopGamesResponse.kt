@@ -49,7 +49,7 @@ fun TopGamesResponse.transformToDomain(): List<GamesDomain> {
             countChannel = response?.channels?: 0,
             countViews = response?.viewers?: 0,
             name = response?.game?.name?: "",
-            image = response?.game?.box?: hashMapOf()
+            image = response?.game?.box?.get("large")?: ""
         )
     }?: arrayListOf()
 }

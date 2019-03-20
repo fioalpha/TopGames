@@ -2,6 +2,7 @@ package com.poc.fioalpha.a100topgames.presentation.view
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +26,9 @@ import com.poc.fioalpha.a100topgames.R
 import com.poc.fioalpha.a100topgames.presentation.model.GameViewModel
 import com.poc.fioalpha.a100topgames.presentation.presenter.GamesTopPresenter
 import com.poc.fioalpha.a100topgames.presentation.view.DetailGameTopActivity.Companion.GAME_TOP_DATA_EXTRA
+import com.squareup.picasso.Callback
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.OkHttpDownloader
 import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
