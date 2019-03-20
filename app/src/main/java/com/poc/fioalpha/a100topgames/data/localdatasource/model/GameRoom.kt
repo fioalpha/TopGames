@@ -19,7 +19,7 @@ fun GameRoom.transformToGame(): GamesDomain {
         name = this.name,
         countViews = viewers,
         countChannel = counter,
-        image = hashMapOf()
+        image = image
     )
 }
 
@@ -33,7 +33,7 @@ fun GamesDomain.transformToGame(index: Int): GameRoom {
         name = name,
         counter = countChannel,
         viewers = countViews,
-        image = image["large"]?: ""
+        image = image
     )
 }
 
@@ -42,7 +42,7 @@ fun GamesDomain.transformToGame(): GameRoom {
         name = name,
         counter = countChannel,
         viewers = countViews,
-        image = image["large"]?: ""
+        image = image
     )
 }
 

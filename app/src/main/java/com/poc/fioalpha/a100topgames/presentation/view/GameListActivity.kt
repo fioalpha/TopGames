@@ -3,7 +3,6 @@ package com.poc.fioalpha.a100topgames.presentation.view
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
@@ -28,18 +27,19 @@ import javax.inject.Inject
 class GameListActivity : AppCompatActivity(), GamesMainView {
 
 
-    @Inject lateinit var presenter: GamesTopPresenter
+    @Inject
+    lateinit var presenter: GamesTopPresenter
 
     private val gridLayoutManager = GridLayoutManager(this@GameListActivity, 2)
 
     private var scrollEndLess = EndLessScroll(
         gridLayoutManager,
         EndLessStrategies.create()
-    ){
+    ) {
         presenter.getGamesTops(it)
     }
 
-    private val adapterGamesTop: GamesTopListAdapter = GamesTopListAdapter{
+    private val adapterGamesTop: GamesTopListAdapter = GamesTopListAdapter {
         presenter.selectedGame(it)
     }
 
@@ -57,6 +57,8 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
             layoutManager = gridLayoutManager
             addOnScrollListener(scrollEndLess)
         }
+
+        games_top_swipe_refresh.setOnRefreshListener { presenter.getGamesTops(0) }
     }
 
     override fun onStart() {
@@ -65,11 +67,11 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
     }
 
     override fun showLoading() {
-        game_top_loading.show()
+        games_top_swipe_refresh.isRefreshing = true
     }
 
     override fun hideLoading() {
-        game_top_loading.hide()
+        games_top_swipe_refresh.isRefreshing = false
     }
 
     override fun setData(data: List<GameViewModel>) {
@@ -77,7 +79,7 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
     }
 
     override fun showError() {
-        Toast.makeText(this,  "Houve erro", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Houve erro", Toast.LENGTH_SHORT).show()
     }
 
     override fun goDetailGame(view: GameViewModel) {
@@ -102,7 +104,7 @@ class EndLessScroll(
     private val layoutManager: GridLayoutManager,
     private val endLessStrategies: EndLessStrategies,
     private val updateAction: (Int) -> Any
-): RecyclerView.OnScrollListener(){
+) : RecyclerView.OnScrollListener() {
     var totalItemCount = 0
     var lastItemCount = 0
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -134,7 +136,7 @@ class EndLessStrategies {
 
 class GamesTopListAdapter(
     private val clickItem: (GameViewModel) -> Any
-): RecyclerView.Adapter<GamesTopListAdapter.GamesTopViewHolder>() {
+) : RecyclerView.Adapter<GamesTopListAdapter.GamesTopViewHolder>() {
 
     private val item: MutableList<GameViewModel> = arrayListOf()
 
@@ -144,7 +146,7 @@ class GamesTopListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GamesTopViewHolder {
-        val  viewBind = DataBindingUtil.inflate<ViewDataBinding>(
+        val viewBind = DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(parent.context), R.layout.adapter_game_top, parent, false
         )
         return GamesTopViewHolder(viewBind, clickItem)
@@ -159,7 +161,7 @@ class GamesTopListAdapter(
     class GamesTopViewHolder(
         private val itemDataBind: ViewDataBinding,
         private val clickItem: (GameViewModel) -> Any
-    ): RecyclerView.ViewHolder(itemDataBind.root) {
+    ) : RecyclerView.ViewHolder(itemDataBind.root) {
 
         fun bind(item: GameViewModel) {
             itemDataBind.setVariable(BR.gamesTop, item)
@@ -171,16 +173,7 @@ class GamesTopListAdapter(
 
 @BindingAdapter("bind:imageUrl")
 fun ImageView.loadImage(@NotNull url: String) {
-    if(url.isEmpty()) return
+    if (url.isEmpty()) return
     Picasso.with(context).load(url)
         .into(this)
-}
-
-
-fun View.show() {
-    visibility = View.VISIBLE
-}
-
-fun View.hide() {
-    visibility = View.GONE
 }

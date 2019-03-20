@@ -15,7 +15,7 @@ fun GamesDomain.transformToViewModel(): GameViewModel = GameViewModel(
     name = name,
     counterChannel = countChannel.toString(),
     counterViewer = countViews.toString(),
-    image = image["large"]?: ""
+    image = image
 )
 
 fun transformToGamesDomainToViewModel(data: List<GamesDomain>): List<GameViewModel> {

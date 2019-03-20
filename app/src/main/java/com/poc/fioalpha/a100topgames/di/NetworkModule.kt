@@ -5,6 +5,10 @@ import com.google.gson.GsonBuilder
 import com.poc.fioalpha.a100topgames.data.remotedatasource.RestService
 import dagger.Module
 import dagger.Provides
+import io.reactivex.Single
+import io.reactivex.SingleTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -61,4 +65,16 @@ class NetworkModule {
     @Provides
     fun restServiceProvides(retrofit: Retrofit): RestService = retrofit.create(RestService::class.java)
 
+    @Singleton
+    @Provides
+    fun schedulesStrategiesProvides(): SchedulerStrategies = SchedulerStrategies()
+
+}
+
+open class SchedulerStrategies {
+
+    open fun <T> applyScheduler(single: Single<T>): Single<T> {
+        return single.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }
