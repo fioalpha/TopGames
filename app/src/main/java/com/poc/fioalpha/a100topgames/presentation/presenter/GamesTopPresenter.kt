@@ -1,6 +1,5 @@
 package com.poc.fioalpha.a100topgames.presentation.presenter
 
-import com.poc.fioalpha.a100topgames.data.Repository
 import com.poc.fioalpha.a100topgames.domain.usecase.GetGamesTopUseCase
 import com.poc.fioalpha.a100topgames.domain.usecase.IsConnectedNetworkUseCase
 import com.poc.fioalpha.a100topgames.presentation.model.GameViewModel

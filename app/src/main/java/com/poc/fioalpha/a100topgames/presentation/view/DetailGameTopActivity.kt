@@ -1,11 +1,10 @@
 package com.poc.fioalpha.a100topgames.presentation.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.poc.fioalpha.a100topgames.R
 import com.poc.fioalpha.a100topgames.databinding.ActivityDetailGameTopBinding
-import com.poc.fioalpha.a100topgames.databinding.ActivityDetailGameTopBindingImpl
 import com.poc.fioalpha.a100topgames.presentation.model.GameViewModel
 
 class DetailGameTopActivity : AppCompatActivity() {

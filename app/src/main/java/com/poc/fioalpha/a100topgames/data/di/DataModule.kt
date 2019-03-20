@@ -18,6 +18,4 @@ abstract class DataModule {
 
     @Binds abstract fun repositoryProvides(repository: RepositoryImpl): Repository
 
-//    @Binds abstract fun localDataSourceProvides(localDataSource: LocalDataSourceImpl): LocalDataSource
-
 }

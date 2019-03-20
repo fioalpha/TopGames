@@ -2,7 +2,6 @@ package com.poc.fioalpha.a100topgames.data.localdatasource.dao
 
 import androidx.room.*
 import com.poc.fioalpha.a100topgames.data.localdatasource.model.GameRoom
-import io.reactivex.Completable
 import io.reactivex.Single
 
 
