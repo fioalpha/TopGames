@@ -28,6 +28,7 @@ import com.poc.fioalpha.a100topgames.presentation.view.DetailGameTopActivity.Com
 import com.squareup.picasso.Picasso
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import org.jetbrains.annotations.NotNull
 import javax.inject.Inject
 
@@ -63,6 +64,8 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
             layoutManager = gridLayoutManager
             addOnScrollListener(scrollEndLess)
         }
+
+        games_top_swipe_refresh.setOnRefreshListener { presenter.getGamesTops(0) }
     }
 
     override fun onStart() {
@@ -71,11 +74,11 @@ class GameListActivity : AppCompatActivity(), GamesMainView {
     }
 
     override fun showLoading() {
-        game_top_loading.show()
+        games_top_swipe_refresh.isRefreshing = true
     }
 
     override fun hideLoading() {
-        game_top_loading.hide()
+        games_top_swipe_refresh.isRefreshing = false
     }
 
     override fun setData(data: List<GameViewModel>) {
@@ -180,13 +183,4 @@ fun ImageView.loadImage(@NotNull url: String) {
     if(url.isEmpty()) return
     Picasso.with(context).load(url)
         .into(this)
-}
-
-
-fun View.show() {
-    visibility = View.VISIBLE
-}
-
-fun View.hide() {
-    visibility = View.GONE
 }
