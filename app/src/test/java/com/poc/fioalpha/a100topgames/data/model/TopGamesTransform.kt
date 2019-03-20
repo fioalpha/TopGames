@@ -17,8 +17,8 @@ class TopGamesTransform {
         Assert.assertEquals(game.countChannel, 15031)
         Assert.assertEquals(game.countViews, 185032)
         Assert.assertEquals(game.name, "Fortnite")
-        Assert.assertEquals(game.image.count(), 4)
-        Assert.assertEquals(game.image, "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-52x72.jpg")
+        Assert.assertEquals(game.image.count(), 60)
+        Assert.assertEquals(game.image, "https://static-cdn.jtvnw.net/ttv-boxart/Fortnite-272x380.jpg")
     }
 
 
